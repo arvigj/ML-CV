@@ -1,0 +1,54 @@
+\documentclass{article}[12pt]
+\usepackage{geometry, fullpage, amsmath, amssymb}
+\author{Arvi Gjoka}
+\date{}
+\title{Machine Learning Homework \# 2}
+
+\newcommand{\norm}[1]{\| #1 \|}
+\renewcommand{\l}{\log}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+
+\item Since the score function is two-valued, we can show equivalence for the negative and positive cases.
+For the negative case
+\begin{gather*}
+D_{logloss} = \frac{1}{\l2} \l (1+e^{w^T\tilde{x}})\\
+\text{and}\\
+D_{distance} = - \l \left(1 - \frac{1}{1 + e^{-w^T\tilde{x}}}\right)\\
+D_{distance} = - \l \left(\frac{e^{-w^T\tilde{x}}}{1+e^{-w^T\tilde{x}}}\right)\\
+D_{distance} = \l (1+e^{w^T\tilde{x}}) = (\l 2) D_{logloss}
+\end{gather*}
+
+For the positive case
+\begin{gather*}
+D_{logloss} = \frac{1}{\l2} \l (1+e^{-w^T\tilde{x}})\\
+\text{and}\\
+D_{distance} = - \l \frac{1}{1+e^{-w^T\tilde{x}}}\\
+D_{distance} = \l (1+e^{-w^T\tilde{x}}) = (\l 2) D_{logloss}
+\end{gather*}
+
+
+\item Since the hinge loss function is not differentiable everywhere, we need to rethink the gradient. The hinge loss function is made up of two smooth functions on either side of $score=1$, so the gradient can be computed and applied separately for $score<1$ and $score>1$ as a piecewise function, which allows us to use gradient based optimization methods. The gradient at $score=1$ can be set as 0 without any problems, as that is a minimum of the hinge loss function, so if $score=1$ is reached then the function is minimized.
+
+\item We have the following definitions for $d^+$ and $d^-$:
+\begin{gather*}
+d^+ = \frac{w^T \tilde{x}^+}{\norm{w}} \hspace{1cm} d^- = -\frac{w^T \tilde{x}^-}{\norm{w}} \\
+\gamma = \frac{1}{2} (d^+ - d^-)\\
+\gamma = \frac{1}{2} \frac{w^T \tilde{x}^+ - w^T \tilde{x}^-}{\norm{w}}\\
+\gamma = \frac{w^T}{\norm{w}} \frac{\tilde{x}^+ - \tilde{x}^-}{2}
+\end{gather*}
+where $\frac{\tilde{x}^+ - \tilde{x}^-}{2}$ is half the distance between the closest positive and negative classified examples and $w^T \cdot (\frac{\tilde{x}^+ - \tilde{x}^-}{2})$ is the symmetric half distance projected perpendicular to the decision boundary, which is the same as the margin. Therefore, this is equivalent to
+\begin{gather*}
+\gamma = \frac{C}{\norm{w}}
+\end{gather*}
+where C is the margin from the decision boundary to either of the closest examples.
+
+
+\end{enumerate}
+
+
+\end{document}
+
